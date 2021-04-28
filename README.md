@@ -5,7 +5,8 @@ Git repository for understanding [A Clustered Approach for Fast Computation of B
 ## Version History
 | Version | Date  | Commit | Notes |
 | :-----: | :-: | :-: | :-: |
-| 0.0 | April 12, 2021 | [ec01299](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/ec01299186fe6aa64cb318f26836dc78ab2e4e34) | first commit |
+| 0.0 | April 28, 2021 | [ec01299](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/ec01299186fe6aa64cb318f26836dc78ab2e4e34) | first commit |
+| 0.1 | April 28, 2021 | [84d59e7](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/84d59e78c2f8e900a6dbe0d5ba1ecd0d95c7177d) | Check border nodes |
 
 ## Graph Data File Format
 The graph data files need to follow the rule below. `<endpoint n>` needs to be an int (node id)
