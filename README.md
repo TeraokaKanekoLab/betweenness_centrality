@@ -43,7 +43,7 @@ The following data (`graph/simple_graph.gr`) represents this simple graph with 9
 Try the following command to get an instant result.
 
 ```
-sh run.sh all graph/simple_graph.gr
+sh run.sh all graph/simple_graph.gr community/simple_graph.cm
 ```
 
 ## References
