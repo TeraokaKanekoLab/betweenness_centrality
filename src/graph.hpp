@@ -9,6 +9,7 @@ private:
     vector<int> node_to_community;
     vector<double> betweenness_centrality;
     vector<vector<int>> communities;
+    unordered_map<int, int> dist_to_num_pairs;
     int num_nodes;
     int num_edges;
     int num_communities;
@@ -42,6 +43,11 @@ public:
     {
         assert(0 <= v && v < num_nodes);
         return neighbors[v].size();
+    }
+
+    int get_num_vertices()
+    {
+        return num_nodes;
     }
 
     int get_num_edges()
@@ -82,6 +88,7 @@ public:
         if (has_computed_bc)
             return;
         has_computed_bc = true;
+        double sum_bc = 0;
         for (int s = 0; s < num_nodes; ++s) {
             stack<int> stack;
             vector<vector<int>> direct_predecessors = vector<vector<int>>(num_nodes, vector<int>());
@@ -117,6 +124,11 @@ public:
                 if (w == s)
                     continue;
                 betweenness_centrality[w] += delta[w];
+                if (dist_to_num_pairs.find(d[w]) == dist_to_num_pairs.end())
+                    dist_to_num_pairs[d[w]] = 1;
+                else
+                    dist_to_num_pairs[d[w]]++;
+                sum_bc += d[w] - 1;
             }
         }
     }
@@ -130,6 +142,7 @@ public:
         v = original_to_renumbered[v];
         neighbors[u].push_back(v);
         neighbors[v].push_back(u);
+        ++num_edges;
     }
 
     void print_betweeness_centrality()
@@ -175,5 +188,29 @@ public:
             all_borderes += num_borders;
         }
         cout << "# nodes: " << num_nodes << ", # border nodes: " << all_borderes << endl;
+    }
+
+    double sum_of_bc()
+    {
+        if (!has_computed_bc)
+            compute_bc();
+        double sum_bc = 0;
+        for (auto bc : betweenness_centrality) {
+            sum_bc += bc;
+        }
+        return sum_bc;
+    }
+
+    void export_dist_impact(string filepath)
+    {
+        if (!has_computed_bc)
+            compute_bc();
+        ofstream output(filepath);
+        vector<pair<int, int>> dist_num_pairs;
+        for (auto kv : dist_to_num_pairs)
+            dist_num_pairs.push_back(kv);
+        sort(dist_num_pairs.begin(), dist_num_pairs.end());
+        for (auto [dist, num_pairs] : dist_num_pairs)
+            output << dist << " " << num_pairs << " " << (dist - 1) * num_pairs << endl;
     }
 };
