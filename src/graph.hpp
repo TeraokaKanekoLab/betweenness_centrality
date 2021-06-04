@@ -9,7 +9,7 @@ private:
     vector<int> node_to_community;
     vector<double> betweenness_centrality;
     vector<vector<int>> communities;
-    unordered_map<int, int> dist_to_num_pairs;
+    unordered_map<int, long long> dist_to_num_pairs;
     int num_nodes;
     int num_edges;
     int num_communities;
@@ -88,7 +88,7 @@ public:
         if (has_computed_bc)
             return;
         has_computed_bc = true;
-        double sum_bc = 0;
+        long long sum_bc = 0;
         for (int s = 0; s < num_nodes; ++s) {
             stack<int> stack;
             vector<vector<int>> direct_predecessors = vector<vector<int>>(num_nodes, vector<int>());
@@ -206,11 +206,11 @@ public:
         if (!has_computed_bc)
             compute_bc();
         ofstream output(filepath);
-        vector<pair<int, int>> dist_num_pairs;
+        vector<pair<int, long long>> dist_num_pairs;
         for (auto kv : dist_to_num_pairs)
             dist_num_pairs.push_back(kv);
         sort(dist_num_pairs.begin(), dist_num_pairs.end());
         for (auto [dist, num_pairs] : dist_num_pairs)
-            output << dist << " " << num_pairs << " " << (dist - 1) * num_pairs << endl;
+            output << dist << " " << num_pairs << " " << (long long)(dist - 1) * num_pairs << endl;
     }
 };
