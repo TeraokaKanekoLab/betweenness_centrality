@@ -7,6 +7,7 @@ Git repository for understanding [A Clustered Approach for Fast Computation of B
 | :-----: | :-: | :-: | :-: |
 | 0.0 | April 28, 2021 | [ec01299](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/ec01299186fe6aa64cb318f26836dc78ab2e4e34) | first commit |
 | 0.1 | April 28, 2021 | [84d59e7](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/84d59e78c2f8e900a6dbe0d5ba1ecd0d95c7177d) | Check border nodes |
+| 0.2 | April 28, 2021 | [1351dcb](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/1351dcbfccaffa19b23f2968e5bb7d45b4a8f069) | dist of two nodes to impact |
 
 ## Graph Data File Format
 The graph data files need to follow the rule below. `<endpoint n>` needs to be an int (node id)
@@ -43,7 +44,7 @@ The following data (`graph/simple_graph.gr`) represents this simple graph with 9
 Try the following command to get an instant result.
 
 ```
-sh run.sh all graph/simple_graph.gr
+sh run.sh all graph/simple_graph.gr output/simple_graph.gr
 ```
 
 ## References
