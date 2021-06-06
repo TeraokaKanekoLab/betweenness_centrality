@@ -32,11 +32,8 @@ int main(int argc, char* argv[])
         output << limit << " ";
         double time = (double)duration2.count() / 1000000;
         cout << "limited bc: " << time << " sec" << endl;
-
-        cout << "top " << 1 << "% hit ratio = " << compute_error_ratio(bc_index, limited_bc_index, 1) << "%" << endl;
-        output << " " << compute_error_ratio(bc_index, limited_bc_index, 1);
         output << time;
-        for (int k = 5; k <= 100; k += 5) {
+        for (int k = 1; k <= 100; ++k) {
             double ratio = compute_error_ratio(bc_index, limited_bc_index, k);
             cout << "top " << k << "% error ratio = " << ratio << "%" << endl;
             output << " " << ratio;
