@@ -13,6 +13,7 @@ private:
     int num_nodes;
     int num_edges;
     int num_communities;
+    int diameter;
     bool has_computed_bc;
 
     void add_vertex(int original_id)
@@ -71,6 +72,13 @@ public:
         return vertices;
     }
 
+    int get_diameter()
+    {
+        if (!has_computed_bc)
+            compute_bc();
+        return diameter;
+    }
+
     void print_graph()
     {
         for (int i = 0; i < num_nodes; ++i) {
@@ -83,10 +91,10 @@ public:
     }
 
     // compute
-    void compute_bc()
+    vector<double> compute_bc()
     {
         if (has_computed_bc)
-            return;
+            return betweenness_centrality;
         has_computed_bc = true;
         long long sum_bc = 0;
         for (int s = 0; s < num_nodes; ++s) {
@@ -130,7 +138,64 @@ public:
                     dist_to_num_pairs[d[w]]++;
                 sum_bc += d[w] - 1;
             }
+
+            for (int eachd : d)
+                diameter = max(diameter, eachd);
         }
+
+        return betweenness_centrality;
+    }
+
+    // compute
+    vector<double> compute_limited_bc(int max_dist)
+    {
+        vector<double> limited_bc = vector<double>(num_nodes, 0);
+        long long sum_bc = 0;
+        for (int s = 0; s < num_nodes; ++s) {
+            stack<int> stack;
+            vector<vector<int>> direct_predecessors = vector<vector<int>>(num_nodes, vector<int>());
+            vector<int> num_paths = vector<int>(num_nodes, 0);
+            num_paths[s] = 1;
+            vector<int> d = vector<int>(num_nodes, -1);
+            d[s] = 0;
+            queue<int> visited;
+            visited.push(s);
+
+            while (!visited.empty()) {
+                int v = visited.front();
+                visited.pop();
+                stack.push(v);
+                if (d[v] >= max_dist)
+                    continue;
+                for (int nbr : neighbors[v]) {
+                    if (d[nbr] < 0) {
+                        visited.push(nbr);
+                        d[nbr] = d[v] + 1;
+                    }
+                    if (d[nbr] == d[v] + 1) {
+                        num_paths[nbr] += num_paths[v];
+                        direct_predecessors[nbr].push_back(v);
+                    }
+                }
+            }
+            vector<double> delta = vector<double>(num_nodes, 0);
+            while (!stack.empty()) {
+                int w = stack.top();
+                stack.pop();
+                for (int pred : direct_predecessors[w])
+                    delta[pred] += (double)num_paths[pred] / num_paths[w] * (1 + delta[w]);
+
+                if (w == s)
+                    continue;
+                limited_bc[w] += delta[w];
+                if (dist_to_num_pairs.find(d[w]) == dist_to_num_pairs.end())
+                    dist_to_num_pairs[d[w]] = 1;
+                else
+                    dist_to_num_pairs[d[w]]++;
+                sum_bc += d[w] - 1;
+            }
+        }
+        return limited_bc;
     }
 
     // setter
@@ -147,7 +212,8 @@ public:
 
     void print_betweeness_centrality()
     {
-        compute_bc();
+        if (!has_computed_bc)
+            compute_bc();
         double sum = 0;
         for (int i = 0; i < num_nodes; ++i)
             sum += betweenness_centrality[i];
