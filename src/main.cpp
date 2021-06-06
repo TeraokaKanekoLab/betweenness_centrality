@@ -70,7 +70,7 @@ void top10(string inpath)
 
 int main(int argc, char* argv[])
 {
-    // error_rate(argv[1], argv[2]);
-    top10(argv[1]);
+    error_rate(argv[1], argv[2]);
+    // top10(argv[1]);
     return 0;
 }
