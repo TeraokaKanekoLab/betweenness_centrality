@@ -45,6 +45,13 @@ public:
         assert(0 <= v && v < num_nodes);
         return neighbors[v].size();
     }
+    vector<int> get_degrees()
+    {
+        vector<int> degrees = vector<int>(num_nodes, 0);
+        for (int i = 0; i < num_nodes; ++i)
+            degrees[i] = get_degree(i);
+        return degrees;
+    }
 
     int get_num_vertices()
     {
@@ -178,7 +185,9 @@ public:
                     }
                 }
             }
+
             vector<double> delta = vector<double>(num_nodes, 0);
+
             while (!stack.empty()) {
                 int w = stack.top();
                 stack.pop();
@@ -198,6 +207,34 @@ public:
         return limited_bc;
     }
 
+    double compute_clustering_coefficient(int nd, unordered_map<int, unordered_set<int>>& neighbors_of)
+    {
+        vector<int> nbs = get_neighbors(nd);
+        int d = nbs.size(); // degree of nd
+        if (d < 2)
+            return 0;
+        int cnt = 0; // # of edges in any pairs of neighbors
+        for (int nb1 : nbs)
+            for (int nb2 : nbs)
+                if (neighbors_of[nb1].find(nb2) != neighbors_of[nb1].end())
+                    cnt++;
+        return (double)cnt / (d * (d - 1));
+    }
+
+    vector<double> compute_all_clustering_coefficient()
+    {
+        vector<double> cc = vector<double>(num_nodes, 0);
+        unordered_map<int, unordered_set<int>> neighbors_of;
+        for (int nd = 0; nd < num_nodes; nd++) {
+            neighbors_of[nd] = unordered_set<int>();
+            for (int nbr : get_neighbors(nd))
+                neighbors_of[nd].insert(nbr);
+        }
+        for (int nd = 0; nd < num_nodes; nd++)
+            cc[nd] = compute_clustering_coefficient(nd, neighbors_of);
+        return cc;
+    }
+
     // setter
     void add_edge(int u, int v)
     {
@@ -215,10 +252,12 @@ public:
         if (!has_computed_bc)
             compute_bc();
         double sum = 0;
+        // for (int i = 0; i < num_nodes; ++i)
+        //     sum += betweenness_centrality[i];
+        // for (int i = 0; i < num_nodes; ++i)
+        //     cout << renumbered_to_original[i] << ": " << betweenness_centrality[i] / sum << endl;
         for (int i = 0; i < num_nodes; ++i)
-            sum += betweenness_centrality[i];
-        for (int i = 0; i < num_nodes; ++i)
-            cout << renumbered_to_original[i] << ": " << betweenness_centrality[i] / sum << endl;
+            cout << renumbered_to_original[i] << ": " << betweenness_centrality[i] << endl;
     }
 
     void add_to_community(int original_id, int community)

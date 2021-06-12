@@ -68,9 +68,25 @@ void top10(string inpath)
     }
 }
 
+void export_data(string inpath, string outpath)
+{
+    Graph g = read_graph(inpath);
+    ofstream output(outpath);
+
+    vector<double> limited_bc = g.compute_limited_bc(2);
+    cout << "task 1 done" << endl;
+    vector<double> cc = g.compute_all_clustering_coefficient();
+    cout << "task 2 done" << endl;
+    vector<int> degrees = g.get_degrees();
+
+    for (int i = 0; i < g.get_num_vertices(); ++i)
+        output << limited_bc[i] << "," << cc[i] << "," << degrees[i] << endl;
+}
+
 int main(int argc, char* argv[])
 {
-    error_rate(argv[1], argv[2]);
+    // error_rate(argv[1], argv[2]);
     // top10(argv[1]);
+    export_data(argv[1], argv[2]);
     return 0;
 }
