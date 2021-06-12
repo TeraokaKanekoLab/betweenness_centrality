@@ -10,6 +10,7 @@ Git repository for understanding [A Clustered Approach for Fast Computation of B
 | 0.2 | June 4, 2021 | [1351dcb](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/1351dcbfccaffa19b23f2968e5bb7d45b4a8f069) | dist of two nodes to impact |
 | 0.3 | June 6, 2021 | [55d5e59](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/55d5e594957f9aa5b67755c19448b183f6a337aa) | error ratio and computation time |
 | 0.4 | June 6, 2021 | [3f8d100](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/3f8d100c7e3c0ef65ea2cb7cceb5f2e830a7b831) | modified sorting order from ascending to descending |
+| 0.5 | June 12, 2021 | [eaaffb4](https://github.com/TeraokaKanekoLab/betweenness_centrality/commit/eaaffb4c9f8c453fb20b878b9607fd961a75f48e) | calculate clustering coefficient |
 
 ## Graph Data File Format
 The graph data files need to follow the rule below. `<endpoint n>` needs to be an int (node id)
